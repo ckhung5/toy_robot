@@ -1,5 +1,5 @@
 class Robot
-	attr_accessor :x, :y, :direction
+	attr_reader :x, :y, :direction
 
 	def initialize(x:, y:, direction:)
 		@x = x
