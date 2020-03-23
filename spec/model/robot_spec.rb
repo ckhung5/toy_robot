@@ -2,6 +2,7 @@ require "model/robot"
 
 RSpec.describe Robot do
   let(:max_board_size) { 6 }
+  let(:name) { 'Alice' }
 
   describe "#report" do
   	let(:x) { 1 }
@@ -9,11 +10,13 @@ RSpec.describe Robot do
   	let(:direction) { 'EAST' }
 
   	subject do 
-  		described_class.new(x: x, y: y, direction: direction, max_board_size: max_board_size).report
+  		described_class.new(
+        name: name, x: x, y: y, direction: direction, max_board_size: max_board_size
+      ).report
   	end
 
     it "should report the robot position" do
-      expect(subject).to eq([x, y, direction])
+      expect(subject).to eq([name, x, y, direction])
     end
   end
 
@@ -22,12 +25,12 @@ RSpec.describe Robot do
   	let(:y) { 1 }
   	let(:direction) { 'EAST' }
   	let(:new_direction) { 'NORTH' }
-  	let(:robot) { described_class.new(x: x, y: y, direction: direction, max_board_size: max_board_size) }
+  	let(:robot) { described_class.new(name: name, x: x, y: y, direction: direction, max_board_size: max_board_size) }
   	before do
   		robot.turn_left
   	end
     it "should report the robot position" do
-      expect(robot.report).to eq([x, y, new_direction])
+      expect(robot.report).to eq([name, x, y, new_direction])
     end
   end
 
@@ -36,13 +39,13 @@ RSpec.describe Robot do
   	let(:y) { 1 }
   	let(:direction) { 'EAST' }
   	let(:new_direction) { 'SOUTH' }
-  	let(:robot) { described_class.new(x: x, y: y, direction: direction, max_board_size: max_board_size) }
+  	let(:robot) { described_class.new(name: name, x: x, y: y, direction: direction, max_board_size: max_board_size) }
   	before do 
   		robot.turn_right
   	end
 
     it "should report the robot position" do
-      expect(robot.report).to eq([x, y, new_direction])
+      expect(robot.report).to eq([name, x, y, new_direction])
     end
   end
 
@@ -55,10 +58,10 @@ RSpec.describe Robot do
 	  	let(:x) { 1 }
 			let(:y) { 1 }
 			let(:direction) { 'EAST' }
-			let(:robot) { described_class.new(x: x, y: y, direction: direction, max_board_size: max_board_size) }
+			let(:robot) { described_class.new(name: name, x: x, y: y, direction: direction, max_board_size: max_board_size) }
 
   		it "should report the robot position" do
-     		expect(robot.report).to eq([x+1, y, direction])
+     		expect(robot.report).to eq([name, x+1, y, direction])
     	end
   	end
 
@@ -67,10 +70,10 @@ RSpec.describe Robot do
 				let(:x) { 0 }
 				let(:y) { 1 }
 				let(:direction) { 'WEST' }
-				let(:robot) { described_class.new(x: x, y: y, direction: direction, max_board_size: max_board_size) }
+				let(:robot) { described_class.new(name: name, x: x, y: y, direction: direction, max_board_size: max_board_size) }
 
 	  		it "should report the unmoved robot position" do
-	     		expect(robot.report).to eq([x, y, direction])
+	     		expect(robot.report).to eq([name, x, y, direction])
 	    	end	
 			end
 
@@ -78,10 +81,10 @@ RSpec.describe Robot do
 				let(:x) { 0 }
 				let(:y) { 0 }
 				let(:direction) { 'SOUTH' }
-				let(:robot) { described_class.new(x: x, y: y, direction: direction, max_board_size: max_board_size) }
+				let(:robot) { described_class.new(name: name, x: x, y: y, direction: direction, max_board_size: max_board_size) }
 
 	  		it "should report the unmoved robot position" do
-	     		expect(robot.report).to eq([x, y, direction])
+	     		expect(robot.report).to eq([name, x, y, direction])
 	    	end	
 			end
   	end

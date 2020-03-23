@@ -1,7 +1,8 @@
 class Robot
-	attr_reader :x, :y, :direction
+	attr_reader :name, :x, :y, :direction
 
-	def initialize(x:, y:, direction:, max_board_size:)
+	def initialize(name:, x:, y:, direction:, max_board_size:)
+		@name = name
 		@x = x
 		@y = y
 		@direction = direction
@@ -9,7 +10,7 @@ class Robot
 	end
 
 	def report
-		[x, y, direction.upcase]
+		[name, x, y, direction.upcase]
 	end
 
 	def turn_left
