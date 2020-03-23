@@ -2,11 +2,13 @@ require "model/board"
 require "model/robot"
 
 RSpec.describe Board do
+  let(:max_board_size) { 6 }
+
   describe "#add_robot" do
   	let(:x) { 1 }
   	let(:y) { 1 }
   	let(:direction) { 'EAST' }
-    let(:robot) { Robot.new(x: x, y: y, direction: direction) }
+    let(:robot) { Robot.new(x: x, y: y, direction: direction, max_board_size: max_board_size) }
     let(:board) { described_class.new }
 
     before do 
@@ -34,7 +36,7 @@ RSpec.describe Board do
       let(:x) { 1 }
       let(:y) { 1 }
       let(:direction) { 'EAST' }
-      let(:robot) { Robot.new(x: x, y: y, direction: direction) }
+      let(:robot) { Robot.new(x: x, y: y, direction: direction, max_board_size: max_board_size) }
       let(:board) { described_class.new }
       
       before do

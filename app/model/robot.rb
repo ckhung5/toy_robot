@@ -1,10 +1,11 @@
 class Robot
 	attr_reader :x, :y, :direction
 
-	def initialize(x:, y:, direction:)
+	def initialize(x:, y:, direction:, max_board_size:)
 		@x = x
 		@y = y
 		@direction = direction
+		@max_board_size = max_board_size
 	end
 
 	def report
@@ -40,11 +41,11 @@ class Robot
 	def move
 		case direction.downcase
 		when 'north'
-			@y += 1 unless y + 1 > 6
+			@y += 1 unless y + 1 > @max_board_size
 		when 'south'
 			@y -= 1 unless y - 1 < 0
 		when 'east'
-			@x += 1 unless x + 1 > 6
+			@x += 1 unless x + 1 > @max_board_size
 		when 'west'
 			@x -= 1	unless x - 1 < 0
 		end
