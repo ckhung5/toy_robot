@@ -1,92 +1,137 @@
-require "model/robot"
+# frozen_string_literal: true
+
+require 'model/robot'
 
 RSpec.describe Robot do
   let(:max_board_size) { 6 }
   let(:name) { 'Alice' }
 
-  describe "#report" do
-  	let(:x) { 1 }
-  	let(:y) { 1 }
-  	let(:direction) { 'EAST' }
+  describe '#unavailable_to_operate' do
+    let(:x) { 1 }
+    let(:y) { 1 }
+    let(:direction) { 'EAST' }
 
-  	subject do 
-  		described_class.new(
-        name: name, x: x, y: y, direction: direction, max_board_size: max_board_size
-      ).report
-  	end
+    context 'when the robot is fully initialized' do
+      let(:robot) do 
+        described_class.new(
+          name: name, x: x, y: y, direction: direction, max_board_size: max_board_size
+        ) 
+      end
+      subject do
+        robot.unavailable_to_operate
+      end
 
-    it "should report the robot position" do
-      expect(subject).to eq([name, x, y, direction])
+      it 'should report the robot position' do
+        expect(subject).to be_falsy
+      end
+    end
+
+    context 'when the robot is partialy initialized' do
+      let(:robot) do 
+        described_class.new(
+          name: name, x: nil, y: nil, direction: direction, max_board_size: max_board_size
+        ) 
+      end
+      subject do
+        robot.unavailable_to_operate
+      end
+
+      it 'should report the robot position' do
+        expect(subject).to be_truthy
+      end
     end
   end
 
-  describe "#turn_left" do
-  	let(:x) { 1 }
-  	let(:y) { 1 }
-  	let(:direction) { 'EAST' }
-  	let(:new_direction) { 'NORTH' }
-  	let(:robot) { described_class.new(name: name, x: x, y: y, direction: direction, max_board_size: max_board_size) }
-  	before do
-  		robot.turn_left
-  	end
-    it "should report the robot position" do
-      expect(robot.report).to eq([name, x, y, new_direction])
-    end
-  end
+  describe '#action' do
+    context 'report' do
+      let(:x) { 1 }
+      let(:y) { 1 }
+      let(:direction) { 'EAST' }
 
-  describe "#turn_right" do
-  	let(:x) { 1 }
-  	let(:y) { 1 }
-  	let(:direction) { 'EAST' }
-  	let(:new_direction) { 'SOUTH' }
-  	let(:robot) { described_class.new(name: name, x: x, y: y, direction: direction, max_board_size: max_board_size) }
-  	before do 
-  		robot.turn_right
-  	end
+      subject do
+        described_class.new(
+          name: name, x: x, y: y, direction: direction, max_board_size: max_board_size
+        ).action('REPORT')
+      end
 
-    it "should report the robot position" do
-      expect(robot.report).to eq([name, x, y, new_direction])
-    end
-  end
-
-  describe "#move" do
-    before do
-      robot.move
+      it 'should report the robot position' do
+        expect(subject).to eq([name, x, y, direction])
+      end
     end
 
-  	context 'valid movement' do
-	  	let(:x) { 1 }
-			let(:y) { 1 }
-			let(:direction) { 'EAST' }
-			let(:robot) { described_class.new(name: name, x: x, y: y, direction: direction, max_board_size: max_board_size) }
+    context 'turn_left' do
+      let(:x) { 1 }
+      let(:y) { 1 }
+      let(:direction) { 'EAST' }
+      let(:new_direction) { 'NORTH' }
+      let(:robot) { described_class.new(name: name, x: x, y: y, direction: direction, max_board_size: max_board_size) }
+      subject do
+        robot.action('LEFT')
+      end
+      it 'should report the robot position' do
+        subject
+        expect(robot.action('REPORT')).to eq([name, x, y, new_direction])
+      end
+    end
 
-  		it "should report the robot position" do
-     		expect(robot.report).to eq([name, x+1, y, direction])
-    	end
-  	end
+    context 'turn_right' do
+      let(:x) { 1 }
+      let(:y) { 1 }
+      let(:direction) { 'EAST' }
+      let(:new_direction) { 'SOUTH' }
+      let(:robot) { described_class.new(name: name, x: x, y: y, direction: direction, max_board_size: max_board_size) }
+      subject do
+        robot.action('RIGHT')
+      end
 
-		context 'invalid movement' do
-			context 'when negative x position value' do
-				let(:x) { 0 }
-				let(:y) { 1 }
-				let(:direction) { 'WEST' }
-				let(:robot) { described_class.new(name: name, x: x, y: y, direction: direction, max_board_size: max_board_size) }
+      it 'should report the robot position' do
+        subject
+        expect(robot.action('REPORT')).to eq([name, x, y, new_direction])
+      end 
+    end
 
-	  		it "should report the unmoved robot position" do
-	     		expect(robot.report).to eq([name, x, y, direction])
-	    	end	
-			end
+    context 'move' do
+      subject do
+        robot.action('MOVE')
+      end
 
-			context 'when negative y position value' do
-				let(:x) { 0 }
-				let(:y) { 0 }
-				let(:direction) { 'SOUTH' }
-				let(:robot) { described_class.new(name: name, x: x, y: y, direction: direction, max_board_size: max_board_size) }
+      context 'valid movement' do
+        let(:x) { 1 }
+        let(:y) { 1 }
+        let(:direction) { 'EAST' }
+        let(:robot) { described_class.new(name: name, x: x, y: y, direction: direction, max_board_size: max_board_size) }
 
-	  		it "should report the unmoved robot position" do
-	     		expect(robot.report).to eq([name, x, y, direction])
-	    	end	
-			end
-  	end
+        it 'should report the robot position' do
+          subject
+          expect(robot.action('REPORT')).to eq([name, x + 1, y, direction])
+        end
+      end
+
+      context 'invalid movement' do
+        context 'when negative x position value' do
+          let(:x) { 0 }
+          let(:y) { 1 }
+          let(:direction) { 'WEST' }
+          let(:robot) { described_class.new(name: name, x: x, y: y, direction: direction, max_board_size: max_board_size) }
+
+          it 'should report the unmoved robot position' do
+            subject
+            expect(robot.action('REPORT')).to eq([name, x, y, direction])
+          end
+        end
+
+        context 'when negative y position value' do
+          let(:x) { 0 }
+          let(:y) { 0 }
+          let(:direction) { 'SOUTH' }
+          let(:robot) { described_class.new(name: name, x: x, y: y, direction: direction, max_board_size: max_board_size) }
+
+          it 'should report the unmoved robot position' do
+            subject
+            expect(robot.action('REPORT')).to eq([name, x, y, direction])
+          end
+        end
+      end
+    end
   end
 end
