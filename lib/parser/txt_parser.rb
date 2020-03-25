@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'byebug'
-
 module TXTParser
 	PLACE_COMMAND_REGEX = /(\d{1},\d{1},[a-zA-Z]{4,5})/
 	OTHER_COMMAND_REGEX = /: ([a-zA-Z]{4,6})/
