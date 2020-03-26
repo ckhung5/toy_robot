@@ -36,6 +36,7 @@ class Robot
 
   def turn_left
     return if unavailable_to_operate
+
     @direction = case direction.downcase
                  when 'north'
                    'west'
@@ -50,6 +51,7 @@ class Robot
 
   def turn_right
     return if unavailable_to_operate
+
     @direction = case direction.downcase
                  when 'north'
                    'east'
@@ -66,6 +68,7 @@ class Robot
     cal_x = x
     cal_y = y
     return if unavailable_to_operate
+
     case direction.downcase
     when 'north'
       cal_y += 1 unless cal_y + 1 > @max_board_size
@@ -77,6 +80,7 @@ class Robot
       cal_x -= 1 unless cal_x - 1 < 0
     end
     return if board.existing_robot?(x: cal_x, y: cal_y)
+
     @x = cal_x
     @y = cal_y
   end

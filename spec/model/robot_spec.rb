@@ -13,10 +13,10 @@ RSpec.describe Robot do
     let(:direction) { 'EAST' }
 
     context 'when the robot is fully initialized' do
-      let(:robot) do 
+      let(:robot) do
         described_class.new(
           name: name, x: x, y: y, direction: direction, max_board_size: max_board_size
-        ) 
+        )
       end
       subject do
         robot.unavailable_to_operate
@@ -28,10 +28,10 @@ RSpec.describe Robot do
     end
 
     context 'when the robot is partialy initialized' do
-      let(:robot) do 
+      let(:robot) do
         described_class.new(
           name: name, x: nil, y: nil, direction: direction, max_board_size: max_board_size
-        ) 
+        )
       end
       subject do
         robot.unavailable_to_operate
@@ -88,7 +88,7 @@ RSpec.describe Robot do
       it 'should report the robot position' do
         subject
         expect(robot.action('REPORT', nil)).to eq([name, x, y, new_direction])
-      end 
+      end
     end
 
     context 'move' do
@@ -115,7 +115,9 @@ RSpec.describe Robot do
           let(:x) { 0 }
           let(:y) { 1 }
           let(:direction) { 'WEST' }
-          let(:robot) { described_class.new(name: name, x: x, y: y, direction: direction, max_board_size: max_board_size) }
+          let(:robot) do
+            described_class.new(name: name, x: x, y: y, direction: direction, max_board_size: max_board_size)
+          end
 
           it 'should report the unmoved robot position' do
             subject
@@ -127,7 +129,9 @@ RSpec.describe Robot do
           let(:x) { 0 }
           let(:y) { 0 }
           let(:direction) { 'SOUTH' }
-          let(:robot) { described_class.new(name: name, x: x, y: y, direction: direction, max_board_size: max_board_size) }
+          let(:robot) do
+            described_class.new(name: name, x: x, y: y, direction: direction, max_board_size: max_board_size)
+          end
 
           it 'should report the unmoved robot position' do
             subject

@@ -13,7 +13,7 @@ puts 'Initialising Board'
 puts '----------'
 board = Board.new
 puts '----------'
-puts "Parsing Commands"
+puts 'Parsing Commands'
 puts '----------'
 commands = TXTParser.parse
 puts '----------'
