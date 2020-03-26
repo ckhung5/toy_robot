@@ -8,11 +8,12 @@ module TXTParser
   class << self
   	def parse(filename: File.join(File.dirname(__FILE__), '../../feature/command.txt'))
 	  	command = {}
+	  	command_step = 0
 	    File.foreach(filename) do |line|
 	    	robot_name = name_capture(line)
 	    	raise "Robot name is not valid" unless robot_name
-	    	command[robot_name] ||= []
-	      command[robot_name] += command_capture(line)
+	    	command[command_step] = {robot_name => command_capture(line)}
+	    	command_step += 1
 	    end
 	    command
 	  end
@@ -20,11 +21,11 @@ module TXTParser
 	  private
 
 	  def command_capture(string)
-	  	result = []
+	  	result = ''
 	  	[PLACE_COMMAND_REGEX, OTHER_COMMAND_REGEX].each do |regex|
 	  		next if string.match(regex).nil?
 	  		next if string.match(regex)[1] == 'PLACE'
-	  		result.push(string.match(regex)[1])
+	  		result = string.match(regex)[1]
 	  	end
     	result
     end
