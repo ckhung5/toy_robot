@@ -15,14 +15,14 @@ class Robot
     [x, y, direction, @max_board_size, name].any?(nil)
   end
 
-  def action(command)
+  def action(command, board)
     case command
     when 'LEFT'
       turn_left
     when 'RIGHT'
       turn_right
     when 'MOVE'
-      move
+      move(board)
     when 'REPORT'
       report
     end
@@ -31,10 +31,11 @@ class Robot
   private
 
   def report
-    p [name, x, y, direction.upcase]
+    p [name, x, y, direction&.upcase]
   end
 
   def turn_left
+    return if unavailable_to_operate
     @direction = case direction.downcase
                  when 'north'
                    'west'
@@ -48,6 +49,7 @@ class Robot
   end
 
   def turn_right
+    return if unavailable_to_operate
     @direction = case direction.downcase
                  when 'north'
                    'east'
@@ -60,16 +62,22 @@ class Robot
     end
   end
 
-  def move
+  def move(board)
+    cal_x = x
+    cal_y = y
+    return if unavailable_to_operate
     case direction.downcase
     when 'north'
-      @y += 1 unless y + 1 > @max_board_size
+      cal_y += 1 unless cal_y + 1 > @max_board_size
     when 'south'
-      @y -= 1 unless y - 1 < 0
+      cal_y -= 1 unless cal_y - 1 < 0
     when 'east'
-      @x += 1 unless x + 1 > @max_board_size
+      cal_x += 1 unless cal_x + 1 > @max_board_size
     when 'west'
-      @x -= 1 unless x - 1 < 0
+      cal_x -= 1 unless cal_x - 1 < 0
     end
+    return if board.existing_robot?(x: cal_x, y: cal_y)
+    @x = cal_x
+    @y = cal_y
   end
 end

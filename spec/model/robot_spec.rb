@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'model/robot'
+require 'model/board'
 
 RSpec.describe Robot do
   let(:max_board_size) { 6 }
@@ -51,7 +52,7 @@ RSpec.describe Robot do
       subject do
         described_class.new(
           name: name, x: x, y: y, direction: direction, max_board_size: max_board_size
-        ).action('REPORT')
+        ).action('REPORT', nil)
       end
 
       it 'should report the robot position' do
@@ -66,11 +67,11 @@ RSpec.describe Robot do
       let(:new_direction) { 'NORTH' }
       let(:robot) { described_class.new(name: name, x: x, y: y, direction: direction, max_board_size: max_board_size) }
       subject do
-        robot.action('LEFT')
+        robot.action('LEFT', nil)
       end
       it 'should report the robot position' do
         subject
-        expect(robot.action('REPORT')).to eq([name, x, y, new_direction])
+        expect(robot.action('REPORT', nil)).to eq([name, x, y, new_direction])
       end
     end
 
@@ -81,19 +82,21 @@ RSpec.describe Robot do
       let(:new_direction) { 'SOUTH' }
       let(:robot) { described_class.new(name: name, x: x, y: y, direction: direction, max_board_size: max_board_size) }
       subject do
-        robot.action('RIGHT')
+        robot.action('RIGHT', nil)
       end
 
       it 'should report the robot position' do
         subject
-        expect(robot.action('REPORT')).to eq([name, x, y, new_direction])
+        expect(robot.action('REPORT', nil)).to eq([name, x, y, new_direction])
       end 
     end
 
     context 'move' do
       subject do
-        robot.action('MOVE')
+        robot.action('MOVE', board)
       end
+
+      let(:board) { Board.new }
 
       context 'valid movement' do
         let(:x) { 1 }
@@ -103,7 +106,7 @@ RSpec.describe Robot do
 
         it 'should report the robot position' do
           subject
-          expect(robot.action('REPORT')).to eq([name, x + 1, y, direction])
+          expect(robot.action('REPORT', nil)).to eq([name, x + 1, y, direction])
         end
       end
 
@@ -116,7 +119,7 @@ RSpec.describe Robot do
 
           it 'should report the unmoved robot position' do
             subject
-            expect(robot.action('REPORT')).to eq([name, x, y, direction])
+            expect(robot.action('REPORT', nil)).to eq([name, x, y, direction])
           end
         end
 
@@ -128,7 +131,7 @@ RSpec.describe Robot do
 
           it 'should report the unmoved robot position' do
             subject
-            expect(robot.action('REPORT')).to eq([name, x, y, direction])
+            expect(robot.action('REPORT', nil)).to eq([name, x, y, direction])
           end
         end
       end
