@@ -10,22 +10,13 @@ class CommandExecutor
 	def run
 		raise 'Board is not initialize' if board.nil? || board.class != Board
 		commands.each do |name, command_list|
-			robot = board.find_robot(name: name)
-
+			robot = get_robot(name)
 			command_list.each do |robot_command|
-				case EXECUTION_CODE.any?(robot_command)
-				when true
-					raise 'Robot is not initilise properly to do command' if robot.nil? || robot.unavailable_to_operate
-					robot.action(robot_command)
-				when false
-					x, y, direction = robot_command.split(',')
-
-					raise "Could not place new robot on position x:#{x}, y:#{y} as there is an existing one" if validate_spot_before_place(board, x.to_i, y.to_i)
-					robot = Robot.new(name: name, max_board_size: board.size)
-					robot.x = x.to_i
-					robot.y = y.to_i
-					robot.direction = direction
-					board.add_robot(robot)
+				case robot_command
+				when *EXECUTION_CODE
+					robot.action(robot_command, board)
+				else
+					place_robot(robot, robot_command)
 				end
 			end
 		end
@@ -34,7 +25,21 @@ class CommandExecutor
 	private
 	attr_reader :commands, :board
 
-	def validate_spot_before_place(board, x, y)
-		board.exisiting_robot?(x: x, y: y)
+	def place_robot(robot, coordinate)
+		x, y, direction = coordinate.split(',')
+	
+		robot.x = x.to_i
+		robot.y = y.to_i
+		robot.direction = direction
+	end
+
+	def get_robot(name)
+		robot = board.find_robot(name: name)
+		
+		if robot.nil?
+			robot = Robot.new(name: name, max_board_size: board.size)
+			board.add_robot(robot)
+		end
+		robot
 	end
 end
