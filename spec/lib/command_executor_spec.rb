@@ -60,7 +60,10 @@ RSpec.describe CommandExecutor do
 
 	  	it 'should place the second robot' do
 	  		subject
-	  		expect(board.find_robot(name: 'BRUCE').unavailable_to_operate).to eq(false)
+	  		bruce_robot = board.find_robot(name: 'BRUCE')
+	  		expect(bruce_robot.x).to eq(0)
+	  		expect(bruce_robot.y).to eq(0)
+	  		expect(bruce_robot.direction).to eq('NORTH')
 	  	end
 		end
 
