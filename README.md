@@ -25,7 +25,9 @@ TXTPARSER:
 - Currently the commands are in a `.txt` file and TXTParser is to read the commands and make a set of commands related to the robots.
 
 Command Executor:
-- With the output from TXTParser, the Command Executor will run the commands to run the robots on the board.
+- With the output from TXTParser, the Command Executor will run the commands step by step.
+
+Note: The command needs to run one by one because there are corner cases when two or more robots collide together.
 
 ## Future Improvements
 There are several improvements that can be extend here:
