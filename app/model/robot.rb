@@ -31,7 +31,7 @@ class Robot
   private
 
   def report
-    p [name, x, y, direction&.upcase]
+    p "#{name}: #{x},#{y},#{direction&.upcase}"
   end
 
   def turn_left
