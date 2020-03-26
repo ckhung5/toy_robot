@@ -36,7 +36,7 @@ RSpec.describe Board do
       let(:y) { 1 }
       let(:board) { described_class.new }
 
-      subject { board.exisiting_robot?(x: x, y: y) }
+      subject { board.existing_robot?(x: x, y: y) }
       it 'should return false' do
         expect(subject).to eq(false)
       end
@@ -53,7 +53,7 @@ RSpec.describe Board do
         board.add_robot(robot)
       end
 
-      subject { board.exisiting_robot?(x: x, y: y) }
+      subject { board.existing_robot?(x: x, y: y) }
       it 'should return true' do
         expect(subject).to eq(true)
       end

@@ -16,7 +16,7 @@ class Board
     @robots << robot
   end
 
-  def exisiting_robot?(x:, y:)
+  def existing_robot?(x:, y:)
     @robots.any? do |robot|
       robot.x == x && robot.y == y
     end
