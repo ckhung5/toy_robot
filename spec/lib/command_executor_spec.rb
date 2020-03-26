@@ -52,9 +52,12 @@ RSpec.describe CommandExecutor do
         )
       end
 
-      it 'should not do any command for this robot' do
+      it 'should not have any command in this robot as it is not initialize yet' do
         subject
-        expect(board.find_robot(name: 'BRUCE').unavailable_to_operate).to eq(true)
+        bruce_robot = board.find_robot(name: 'BRUCE')
+        expect(bruce_robot.x).to eq(nil)
+        expect(bruce_robot.y).to eq(nil)
+        expect(bruce_robot.direction).to eq(nil)
       end
     end
 
@@ -121,6 +124,33 @@ RSpec.describe CommandExecutor do
         expect(bruce_robot.x).to eq(0)
         expect(bruce_robot.y).to eq(0)
         expect(bruce_robot.direction).to eq('NORTH')
+      end
+    end
+
+    context 'when one of the command is wrong' do
+      let(:executor) do
+        CommandExecutor.new(
+          commands: {
+            0 => {
+              'ALICE' => '0,0,NORTH'
+            },
+            1 => {
+              'ALICE' => 'KILL'
+            },
+            2 => {
+              'ALICE' => 'REPORT'
+            }
+          },
+          board: board
+        )
+      end
+
+      it 'should ignore the wrong command' do
+        subject
+        alice_robot = board.find_robot(name: 'ALICE')
+        expect(alice_robot.x).to eq(0)
+        expect(alice_robot.y).to eq(0)
+        expect(alice_robot.direction).to eq('NORTH')
       end
     end
   end

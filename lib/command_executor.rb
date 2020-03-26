@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../app/model/robot'
+require_relative 'parser/txt_parser'
 
 class CommandExecutor
   EXECUTION_CODE = %w[LEFT RIGHT MOVE REPORT].freeze
@@ -15,12 +16,8 @@ class CommandExecutor
     (0...commands.count).each do |step_num|
       commands[step_num].each do |name, robot_command|
         robot = get_robot(name)
-        case robot_command
-        when *EXECUTION_CODE
-          robot.action(robot_command, board)
-        else
-          place_robot(robot, robot_command)
-        end
+        robot.action(robot_command, board) if EXECUTION_CODE.any?(robot_command)
+        place_robot(robot, robot_command) if robot_command.match?(TXTParser::PLACE_COMMAND_REGEX)
       end
     end
   end

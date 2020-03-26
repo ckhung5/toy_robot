@@ -11,10 +11,6 @@ class Robot
     @max_board_size = max_board_size
   end
 
-  def unavailable_to_operate
-    [x, y, direction, @max_board_size, name].any?(nil)
-  end
-
   def action(command, board)
     case command
     when 'LEFT'
@@ -29,6 +25,10 @@ class Robot
   end
 
   private
+
+  def unavailable_to_operate
+    [x, y, direction, @max_board_size, name].any?(nil)
+  end
 
   def report
     p "#{name}: #{x},#{y},#{direction&.upcase}"
