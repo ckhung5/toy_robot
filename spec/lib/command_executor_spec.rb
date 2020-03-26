@@ -5,7 +5,10 @@ RSpec.describe CommandExecutor do
 	describe '#run' do
 		let(:board) { Board.new }
 	  let(:executor) do 
-	  	CommandExecutor.new(commands: {'ALICE' =>['0,0,NORTH', 'REPORT']}, board: board)
+	  	CommandExecutor.new(commands: {
+	        0=>{"ALICE"=>"0,0,NORTH"}, 1=>{"ALICE"=>"MOVE"}, 2=>{"ALICE"=>"REPORT"}
+	      }, board: board
+      )
 	  end
 	  subject do
 	  	executor.run
@@ -34,8 +37,15 @@ RSpec.describe CommandExecutor do
 	  	let(:executor) do 
 	  		CommandExecutor.new(
 	  			commands: {
-	  				'ALICE' =>['0,0,NORTH', 'REPORT'],
-	  				'BRUCE' =>['REPORT']
+	  				0 => {
+	  					'ALICE' =>'0,0,NORTH'
+	  				},
+	  				1 => {
+	  					'ALICE' => 'REPORT'
+	  				},
+	  				2 => {
+	  					'BRUCE' =>'REPORT'
+	  				}
 	  			},
 	  			board: board
 	  		)
@@ -51,14 +61,24 @@ RSpec.describe CommandExecutor do
 	  	let(:executor) do 
 	  		CommandExecutor.new(
 	  			commands: {
-	  				'ALICE' =>['0,0,NORTH', 'REPORT'],
-	  				'BRUCE' =>['0,0,NORTH', 'REPORT']
+	  				0 => {
+							'ALICE' => '0,0,NORTH'
+	  				},
+	  				1 => {
+	  					'ALICE' => 'REPORT'
+	  				},
+	  				2 => {
+	  					'BRUCE' => '0,0,NORTH'
+	  				},
+	  				3 => {
+	  					'BRUNCE' => 'REPORT'
+	  				}
 	  			},
 	  			board: board
 	  		)
 	  	end
 
-	  	it 'should place the second robot' do
+	  	it 'should be able to place BRUCE' do
 	  		subject
 	  		bruce_robot = board.find_robot(name: 'BRUCE')
 	  		expect(bruce_robot.x).to eq(0)
@@ -67,12 +87,28 @@ RSpec.describe CommandExecutor do
 	  	end
 		end
 
-		context 'when one of the robots collide while placing' do
+		context 'when one of the robots collide while moving' do
 	  	let(:executor) do 
 	  		CommandExecutor.new(
 	  			commands: {
-	  				'ALICE' =>['0,0,NORTH', 'MOVE', 'REPORT'],
-	  				'BRUCE' =>['0,0,NORTH', 'MOVE', 'REPORT']
+	  				0 => {
+	  					'ALICE' => '0,0,NORTH'
+	  				},
+	  				1 => {
+	  					'ALICE' => 'MOVE'
+	  				},
+	  				2 => {
+	  					'ALICE' => 'REPORT'
+	  				},
+	  				3 => {
+	  					'BRUCE' => '0,0,NORTH'
+	  				},
+	  				4 => {
+	  					'BRUCE' => 'MOVE'
+	  				},
+	  				5 => {
+	  					'BRUCE' => 'REPORT'
+	  				}
 	  			},
 	  			board: board
 	  		)

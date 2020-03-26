@@ -9,9 +9,10 @@ class CommandExecutor
 	
 	def run
 		raise 'Board is not initialize' if board.nil? || board.class != Board
-		commands.each do |name, command_list|
-			robot = get_robot(name)
-			command_list.each do |robot_command|
+
+		(0...commands.count).each do |step_num|
+			commands[step_num].each do |name, robot_command|
+				robot = get_robot(name)
 				case robot_command
 				when *EXECUTION_CODE
 					robot.action(robot_command, board)
