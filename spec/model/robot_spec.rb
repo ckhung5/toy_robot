@@ -7,42 +7,6 @@ RSpec.describe Robot do
   let(:max_board_size) { 6 }
   let(:name) { 'Alice' }
 
-  describe '#unavailable_to_operate' do
-    let(:x) { 1 }
-    let(:y) { 1 }
-    let(:direction) { 'EAST' }
-
-    context 'when the robot is fully initialized' do
-      let(:robot) do
-        described_class.new(
-          name: name, x: x, y: y, direction: direction, max_board_size: max_board_size
-        )
-      end
-      subject do
-        robot.unavailable_to_operate
-      end
-
-      it 'should report the robot position' do
-        expect(subject).to be_falsy
-      end
-    end
-
-    context 'when the robot is partialy initialized' do
-      let(:robot) do
-        described_class.new(
-          name: name, x: nil, y: nil, direction: direction, max_board_size: max_board_size
-        )
-      end
-      subject do
-        robot.unavailable_to_operate
-      end
-
-      it 'should report the robot position' do
-        expect(subject).to be_truthy
-      end
-    end
-  end
-
   describe '#action' do
     context 'report' do
       let(:x) { 1 }
@@ -56,7 +20,7 @@ RSpec.describe Robot do
       end
 
       it 'should report the robot position' do
-        expect(subject).to eq([name, x, y, direction])
+        expect(subject).to eq("#{name}: #{x},#{y},#{direction}")
       end
     end
 
@@ -71,7 +35,7 @@ RSpec.describe Robot do
       end
       it 'should report the robot position' do
         subject
-        expect(robot.action('REPORT', nil)).to eq([name, x, y, new_direction])
+        expect(robot.action('REPORT', nil)).to eq("#{name}: #{x},#{y},#{new_direction}")
       end
     end
 
@@ -87,7 +51,7 @@ RSpec.describe Robot do
 
       it 'should report the robot position' do
         subject
-        expect(robot.action('REPORT', nil)).to eq([name, x, y, new_direction])
+        expect(robot.action('REPORT', nil)).to eq("#{name}: #{x},#{y},#{new_direction}")
       end
     end
 
@@ -106,7 +70,7 @@ RSpec.describe Robot do
 
         it 'should report the robot position' do
           subject
-          expect(robot.action('REPORT', nil)).to eq([name, x + 1, y, direction])
+          expect(robot.action('REPORT', nil)).to eq("#{name}: #{x + 1},#{y},#{direction}")
         end
       end
 
@@ -121,7 +85,7 @@ RSpec.describe Robot do
 
           it 'should report the unmoved robot position' do
             subject
-            expect(robot.action('REPORT', nil)).to eq([name, x, y, direction])
+            expect(robot.action('REPORT', nil)).to eq("#{name}: #{x},#{y},#{direction}")
           end
         end
 
@@ -135,7 +99,20 @@ RSpec.describe Robot do
 
           it 'should report the unmoved robot position' do
             subject
-            expect(robot.action('REPORT', nil)).to eq([name, x, y, direction])
+            expect(robot.action('REPORT', nil)).to eq("#{name}: #{x},#{y},#{direction}")
+          end
+        end
+
+        context 'when it is not place correctly with no direction' do
+          let(:x) { 0 }
+          let(:y) { 0 }
+          let(:robot) do
+            described_class.new(name: name, x: x, y: y, max_board_size: max_board_size)
+          end
+
+          it 'should report the unmoved robot position' do
+            subject
+            expect(robot.action('REPORT', nil)).to eq("#{name}: #{x},#{y},")
           end
         end
       end
