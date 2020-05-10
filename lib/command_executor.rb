@@ -3,6 +3,7 @@
 require_relative '../app/model/robot'
 require_relative 'parser/txt_parser'
 
+# Execute a list of commands
 class CommandExecutor
   EXECUTION_CODE = %w[LEFT RIGHT MOVE REPORT].freeze
   def initialize(commands:, board:)
