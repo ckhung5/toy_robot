@@ -33,4 +33,5 @@ Note: The command needs to run one by one because there are corner cases when tw
 There are several improvements that can be extend here:
 1. Using a Database to store the status of the robots. With this way, we will not need hold the status of these robots in memory.
 2. Instead of printing the result, we could use a frontend framework to show the robots' position.
-3. Instead of using a `.txt` file with a parser that has high posibility of error proning, we can use a frontend framework to send commands to the backend in a more structure way. 
+3. Instead of using a `.txt` file with a parser that has high posibility of error proning, we can use a frontend framework to send commands to the backend in a more structure way.
+4. Instead of passing the board object around, we can use pass Board id as a parameter and query database for board information.
