@@ -71,3 +71,7 @@ Style/NumericPredicate:
 # URISchemes: http, https
 Layout/LineLength:
   Max: 121
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
