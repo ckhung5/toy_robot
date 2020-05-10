@@ -37,38 +37,42 @@ class Robot
   def turn_left
     return if unavailable_to_operate
 
-    @direction = case direction.downcase
-                 when 'north'
-                   'west'
-                 when 'south'
-                   'east'
-                 when 'east'
-                   'north'
-                 when 'west'
-                   'south'
-    end
+    @direction = direction_calculator(-1)
   end
 
   def turn_right
     return if unavailable_to_operate
 
-    @direction = case direction.downcase
-                 when 'north'
-                   'east'
-                 when 'south'
-                   'west'
-                 when 'east'
-                   'south'
-                 when 'west'
-                   'north'
+    @direction = direction_calculator(+1)
+  end
+
+  def direction_calculator(increment_or_decrement)
+    directions = %w[north east south west]
+
+    direction_index = directions.find_index(direction.downcase)
+
+    if direction_index + increment_or_decrement < 0
+      directions[3]
+    elsif direction_index + increment_or_decrement > directions.length
+      directions[0]
+    else
+      directions[direction_index + increment_or_decrement]
     end
   end
 
   def move(board)
-    cal_x = x
-    cal_y = y
     return if unavailable_to_operate
 
+    new_x_position, new_y_position = position_calculator
+    return if board.existing_robot?(x: new_x_position, y: new_y_position)
+
+    @x = new_x_position
+    @y = new_y_position
+  end
+
+  def position_calculator # rubocop:disable Metrics/MethodLength
+    cal_x = x
+    cal_y = y
     case direction.downcase
     when 'north'
       cal_y += 1 unless cal_y + 1 > @max_board_size
@@ -79,9 +83,6 @@ class Robot
     when 'west'
       cal_x -= 1 unless cal_x - 1 < 0
     end
-    return if board.existing_robot?(x: cal_x, y: cal_y)
-
-    @x = cal_x
-    @y = cal_y
+    [cal_x, cal_y]
   end
 end
